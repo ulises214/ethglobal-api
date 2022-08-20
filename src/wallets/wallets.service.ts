@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 @Injectable()
 export class WalletService {
   public async create(bytes: Uint8Array, password: string): Promise<string> {
-    const hdNode = this.generateHDNode(bytes);
+    const hdNode = this.generateHDNode(bytes, password);
     const wallet = this.generateWalletFromHDNode(hdNode);
     return await this.saveWalletAsJson(wallet, password);
   }
@@ -32,9 +32,12 @@ export class WalletService {
     return new ethers.Wallet(hdNode.privateKey);
   }
 
-  private generateHDNode(entropyBytes: Uint8Array): ethers.utils.HDNode {
+  private generateHDNode(
+    entropyBytes: Uint8Array,
+    password: string,
+  ): ethers.utils.HDNode {
     const mnemonic = this.generateMnemonic(entropyBytes);
-    return ethers.utils.HDNode.fromMnemonic(mnemonic);
+    return ethers.utils.HDNode.fromMnemonic(mnemonic, password);
   }
 
   private async decryptWallet(

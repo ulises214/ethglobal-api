@@ -7,6 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { getHashFromFile } from 'src/utils/GetHashForFile';
 import { CreateWalletByFingerprint } from './dto/CreateWalletByFingerprint.dto';
 import { WalletService } from './wallets.service';
 @Controller('wallets')
@@ -19,8 +20,11 @@ export class WalletsController {
     @UploadedFile() file?: Express.Multer.File,
   ): Promise<string> {
     if (!file) throw new BadRequestException('No file uploaded');
-    const fileBytes = await file.buffer;
-    return this.walletsService.create(fileBytes, data.password);
+    const fileBytes = file.buffer;
+
+    const buffer = getHashFromFile(fileBytes);
+
+    return this.walletsService.create(buffer, data.password);
   }
   @Post('fingerprint/get')
   @UseInterceptors(FileInterceptor('file'))
@@ -29,7 +33,8 @@ export class WalletsController {
     @UploadedFile() file?: Express.Multer.File,
   ): Promise<string> {
     if (!file) throw new BadRequestException('No file uploaded');
-    const fileBytes = await file.buffer;
-    return this.walletsService.create(fileBytes, data.password);
+    const fileBytes = file.buffer;
+    const buffer = getHashFromFile(fileBytes);
+    return this.walletsService.create(buffer, data.password);
   }
 }

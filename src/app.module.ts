@@ -11,11 +11,9 @@ import { MongoConfigModule } from './mongo/mongo-config.module.';
 import { MongoConfigService } from './mongo/mongo-config.service';
 import { NebuiaModule } from './nebuia/nebuia.module';
 import { UsersModule } from './users/users.module';
-import { ZoomModule } from './zoom/zoom.module';
 
 @Module({
   imports: [
-    ZoomModule,
     NebuiaModule,
     AppConfigModule,
     MailingModule,

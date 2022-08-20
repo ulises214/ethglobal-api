@@ -1,4 +1,4 @@
-import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AppConfigService } from '../app/config/app-config.service';
 import { LocalAuthGuard } from '../auth/guards/local-auth.guard';
@@ -14,7 +14,7 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(
-    @Res() req: RequestWithUser,
+    @Req() req: RequestWithUser,
     @Res() response: Response,
   ): Promise<Response> {
     const userId = req.user?._id;

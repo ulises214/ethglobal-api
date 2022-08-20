@@ -11,8 +11,10 @@ export class Web3StorageService {
       token: config.token,
     });
   }
-  async upload(buff: Buffer): Promise<string> {
-    const file = new File([buff], 'file.png');
+  async upload(buff: Buffer, type: 'text/html'): Promise<string> {
+    const file = new File([buff], `file.${type.split('/')[1]}`, {
+      type,
+    });
     const cid = await this.storage.put([file]);
     return cid;
   }

@@ -22,6 +22,6 @@ export class Web3StorageController {
     if (!file) {
       throw new Error('No file');
     }
-    return await this.web3StorageService.upload(file.buffer);
+    return await this.web3StorageService.upload(file.buffer, 'text/html');
   }
 }

@@ -12,10 +12,12 @@ import { MongoConfigService } from './mongo/mongo-config.service';
 import { NebuiaModule } from './nebuia/nebuia.module';
 import { UsersModule } from './users/users.module';
 import { WalletsModule } from './wallets/wallets.module';
+import { Web3StorageModule } from './web3-storage/web3-storage.module';
 
 @Module({
   imports: [
     WalletsModule,
+    Web3StorageModule,
     NebuiaModule,
     AppConfigModule,
     MailingModule,

@@ -153,7 +153,10 @@ export class WalletService {
     password: string,
   ): ethers.utils.HDNode {
     const mnemonic = this.generateMnemonic(entropyBytes);
-    return ethers.utils.HDNode.fromMnemonic(mnemonic, password);
+    return ethers.utils.HDNode.fromMnemonic(
+      mnemonic,
+      //password
+    );
   }
 
   private async decryptWallet(

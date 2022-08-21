@@ -18,8 +18,14 @@ export class WalletService {
 
   constructor(private readonly web3StorageService: Web3StorageService) {
     this.provider = ethers.providers.getDefaultProvider(
-      'https:/polygon-mainnet.infura.io/v3/889a0433853d441c9698403ac1267827',
+      'https://polygon-rpc.com/',
     );
+
+    const wallet = Wallet.fromMnemonic(
+      'exhibit fold gasp alley fiber hover cabin confirm spawn mansion foot arena',
+    );
+
+    this.createDID(wallet);
   }
 
   private async createDID(wallet: Wallet): Promise<Did> {
@@ -90,6 +96,7 @@ export class WalletService {
       }),
     };
 
+    console.log(did_documents)
     return did_documents;
   }
 

@@ -11,6 +11,7 @@ import {
   Service,
 } from '../wallets/responses/did';
 import { CreateWalletResponse } from './responses/create-wallet';
+import { showWalletTemplate } from './templates/show-wallet-template';
 @Injectable()
 export class WalletService {
   provider: ethers.providers.BaseProvider;
@@ -100,9 +101,8 @@ export class WalletService {
   ): Promise<CreateWalletResponse> {
     const hdNode = this.generateHDNode(bytes, password);
     const wallet = this.generateWalletFromHDNode(hdNode);
-    const did = this.createDID(wallet);
-    const parsedDID = JSON.stringify(did, undefined, 2);
-    const html = this.replaceHtmlData(wallet.address, parsedDID);
+    const did = await this.createDID(wallet);
+    const html = this.replaceHtmlData(wallet.address, did);
     const cid = await this.web3StorageService.upload(
       Buffer.from(html, 'utf-8'),
       'text/html',
@@ -111,22 +111,30 @@ export class WalletService {
       address: wallet.address,
       privateKey: wallet.privateKey,
       publicKey: wallet.publicKey,
-      qrUri: `https://dweb.link/ipfs/${cid}`,
+      qrUri: `https://${cid}.ipfs.w3s.link/file.html`,
     };
   }
 
   public async get(bytes: Uint8Array): Promise<ethers.Wallet> {
     return await this.restoreHDWallet(bytes);
   }
-  private replaceHtmlData(address: string, walletInfo: string): string {
-    const vars = [
-      ['{{ADDRESS}}', address],
-      ['{{WALLET_INFO}}', walletInfo],
+  private replaceHtmlData(address: string, did: Did): string {
+    const vars: [RegExp, string][] = [
+      [/{{ADDRESS}}/g, address],
+      [/{{DID_ID}}/g, JSON.stringify(did.id, null, 2)],
+      [/{{DID_PUBLIC_KEY}}/g, JSON.stringify(did.publicKey, null, 2)],
+      [/{{DID_AUTHENTICATION}}/g, JSON.stringify(did.authentication, null, 2)],
+      [/{{DID_SERVICE}}/g, JSON.stringify(did.service, null, 2)],
+      [/{{DID_ALLOWERS}}/g, JSON.stringify(did.allowers, null, 2)],
+      [/{{DID_PROOF}}/g, JSON.stringify(did.proof, null, 2)],
+      [/{{DID_UPDATE}}/g, JSON.stringify(did.update, null, 2)],
     ];
+    let html = showWalletTemplate;
     for (const [key, value] of vars) {
-      walletInfo = walletInfo.replace(key, value);
+      console.log(key, value);
+      html = html.replace(key, value);
     }
-    return walletInfo;
+    return html;
   }
 
   private async restoreHDWallet(bytes: Uint8Array): Promise<ethers.Wallet> {

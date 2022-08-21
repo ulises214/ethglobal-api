@@ -18,19 +18,19 @@ export class WalletService {
 
   constructor(private readonly web3StorageService: Web3StorageService) {
     this.provider = ethers.providers.getDefaultProvider(
-      'https://rinkeby.infura.io/v3/889a0433853d441c9698403ac1267827',
+      'https:/polygon-mainnet.infura.io/v3/889a0433853d441c9698403ac1267827',
     );
   }
 
   private async createDID(wallet: Wallet): Promise<Did> {
     const external = new ethers.Contract(
-      '0x39BE4860ea0939da6b6BC53C50a2a81b3f8D9D95',
+      '0xbc5aDa7d2E7f255787d0Ad6E2E5b4f69cA892f64',
       external_storage,
       this.provider,
     );
 
     const didContract = new ethers.Contract(
-      '0xe8DF3322933500b7a6289b9222121aaAa9f98C7d',
+      '0x9781a69f028b3547D9D08AD3F9675e0179EE9b30',
       contract_did,
       this.provider,
     );
@@ -91,8 +91,6 @@ export class WalletService {
     };
 
     return did_documents;
-    //console.log(document[0][0]);
-    //console.log(document);
   }
 
   public async create(

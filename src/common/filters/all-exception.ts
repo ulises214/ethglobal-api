@@ -11,7 +11,6 @@ import {
   DomainException,
   NetworkException,
   UnknownException,
-  UnknownNebuiaException,
 } from '../domain/Exceptions';
 type ComplexResponseType = {
   response: {
@@ -41,13 +40,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
   private getDomainMessage(exception: DomainException): string {
     if (exception instanceof UnknownException) {
       this.logger.error(exception.message, exception.stack, 'UnknownException');
-    }
-    if (exception instanceof UnknownNebuiaException) {
-      this.logger.error(
-        exception.message,
-        exception.stack,
-        'UnknownNebuiaException',
-      );
     }
     if (exception instanceof NetworkException) {
       this.logger.error(exception.message, exception.stack, 'NetworkException');

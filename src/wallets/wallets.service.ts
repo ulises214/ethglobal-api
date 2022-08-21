@@ -126,14 +126,17 @@ export class WalletService {
   private replaceHtmlData(address: string, did: Did): string {
     const vars: [RegExp, string][] = [
       [/{{ADDRESS}}/g, address],
-      [/{{DID_CONTEXT}}/g, JSON.stringify(did['@context'], null, 2)],
-      [/{{DID_ID}}/g, JSON.stringify(did.id, null, 2)],
-      [/{{DID_PUBLIC_KEY}}/g, JSON.stringify(did.publicKey, null, 2)],
-      [/{{DID_AUTHENTICATION}}/g, JSON.stringify(did.authentication, null, 2)],
-      [/{{DID_SERVICE}}/g, JSON.stringify(did.service, null, 2)],
-      [/{{DID_ALLOWERS}}/g, JSON.stringify(did.allowers, null, 2)],
-      [/{{DID_PROOF}}/g, JSON.stringify(did.proof, null, 2)],
-      [/{{DID_UPDATE}}/g, JSON.stringify(did.update, null, 2)],
+      [/{{DID_CONTEXT}}/g, JSON.stringify(did['@context'] ?? '', null, 2)],
+      [/{{DID_ID}}/g, JSON.stringify(did.id ?? '', null, 2)],
+      [/{{DID_PUBLIC_KEY}}/g, JSON.stringify(did.publicKey ?? '', null, 2)],
+      [
+        /{{DID_AUTHENTICATION}}/g,
+        JSON.stringify(did.authentication ?? '', null, 2),
+      ],
+      [/{{DID_SERVICE}}/g, JSON.stringify(did.service ?? '', null, 2)],
+      [/{{DID_ALLOWERS}}/g, JSON.stringify(did.allowers ?? '', null, 2)],
+      [/{{DID_PROOF}}/g, JSON.stringify(did.proof ?? '', null, 2)],
+      [/{{DID_UPDATE}}/g, JSON.stringify(did.update ?? '', null, 2)],
     ];
     let html = showWalletTemplate;
     for (const [key, value] of vars) {

@@ -6,7 +6,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { DevEndpointGuard } from 'src/common/guards/dev-route.guard';
+import { DevEndpointGuard } from '../common/guards/dev-route.guard';
 import { Web3StorageService } from './web3-storage.service';
 
 @Controller('we3storage')

@@ -7,7 +7,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { getHashFromFile } from 'src/utils/GetHashForFile';
+import { getHashFromFile } from '../utils/GetHashForFile';
 import { CreateWalletByFingerprint } from './dto/CreateWalletByFingerprint.dto';
 import { CreateWalletResponse } from './responses/create-wallet';
 import { WalletService } from './wallets.service';

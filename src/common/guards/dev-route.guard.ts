@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { AppConfigService } from 'src/app/config/app-config.service';
+import { AppConfigService } from '../../app/config/app-config.service';
 
 @Injectable()
 export class DevEndpointGuard implements CanActivate {

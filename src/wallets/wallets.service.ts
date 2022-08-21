@@ -1,7 +1,6 @@
 import { entropyToMnemonic } from '@ethersproject/hdnode';
 import { Injectable } from '@nestjs/common';
 import { ethers, Wallet } from 'ethers';
-import { Web3StorageService } from 'src/web3-storage/web3-storage.service';
 import { contract_did, external_storage } from '../wallets/abi';
 import {
   Authentication,
@@ -10,6 +9,7 @@ import {
   PublicKey,
   Service,
 } from '../wallets/responses/did';
+import { Web3StorageService } from '../web3-storage/web3-storage.service';
 import { CreateWalletResponse } from './responses/create-wallet';
 import { showWalletTemplate } from './templates/show-wallet-template';
 @Injectable()

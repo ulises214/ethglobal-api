@@ -2,7 +2,13 @@ import { entropyToMnemonic } from '@ethersproject/hdnode';
 import { Injectable } from '@nestjs/common';
 import { ethers, Wallet } from 'ethers';
 import { contract_did, external_storage } from 'src/wallets/abi';
-import {Authentication, Did, PublicKey} from 'src/wallets/responses/did';
+import {
+  Authentication,
+  Did,
+  Proof,
+  PublicKey,
+  Service,
+} from 'src/wallets/responses/did';
 @Injectable()
 export class WalletService {
   provider: ethers.providers.BaseProvider;
@@ -11,15 +17,9 @@ export class WalletService {
     this.provider = ethers.providers.getDefaultProvider(
       'https://rinkeby.infura.io/v3/889a0433853d441c9698403ac1267827',
     );
-    console.log('init');
-    this.testContract();
   }
 
-  private async testContract(): Promise<void> {
-    const wallet = Wallet.fromMnemonic(
-      'slab trim elevator elite twenty book october giraffe worry arctic spray double',
-    );
-
+  private async testContract(wallet: Wallet): Promise<Did> {
     const external = new ethers.Contract(
       '0x39BE4860ea0939da6b6BC53C50a2a81b3f8D9D95',
       external_storage,
@@ -36,7 +36,6 @@ export class WalletService {
     const didAddress = 'did:etho:' + wallet.address.slice(2).toLowerCase();
     const document = await did.getDocument(didAddress);
 
-    console.log(document);
     const did_documents: Did = {
       '@context': document['context'],
       id: document['id'],
@@ -66,9 +65,29 @@ export class WalletService {
           };
         },
       ),
-
+      controller: document['controller'],
+      service: document['service'].map((element: Record<string, Service>) => {
+        return {
+          id: element.id,
+          type: element.type,
+          service_endpoint: element.serviceEndpoint,
+          //auth_index: element.auth_index,
+        };
+      }),
+      allowers: document['allowers'],
+      proof: document['proof'].map((element: Record<string, Proof>) => {
+        return {
+          id: element.id,
+          type_signature: element.typeSignature,
+          proof_purpose: element.proofPurpose,
+          verification_method: element.verificationMethod,
+          jws: element.jws,
+          //auth_index: element.auth_index,
+        };
+      }),
     };
-    console.log(did_documents);
+
+    return did_documents;
     //console.log(document[0][0]);
     //console.log(document);
   }

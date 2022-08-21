@@ -126,6 +126,7 @@ export class WalletService {
   private replaceHtmlData(address: string, did: Did): string {
     const vars: [RegExp, string][] = [
       [/{{ADDRESS}}/g, address],
+      [/{{DID_CONTEXT}}/g, JSON.stringify(did['@context'], null, 2)],
       [/{{DID_ID}}/g, JSON.stringify(did.id, null, 2)],
       [/{{DID_PUBLIC_KEY}}/g, JSON.stringify(did.publicKey, null, 2)],
       [/{{DID_AUTHENTICATION}}/g, JSON.stringify(did.authentication, null, 2)],

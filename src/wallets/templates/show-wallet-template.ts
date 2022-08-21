@@ -96,54 +96,12 @@ export const showWalletTemplate = `
         padding: 4px 8px;
         border-radius: 6px;
         background-color: #18004610;
+        overflow-x: auto;
       }
       @media screen and (min-width: 600px) {
         body {
           padding: 10px;
         }
-      }
-      /* when tilted, the left-top  corner is up */
-      .left-top {
-        box-shadow: 1px 1px 0 #ccc, 2px 2px 0 #c9c9c9, 3px 3px 0 #bbb,
-          4px 4px 0 #b9b9b9, 5px 5px 0 #aaa, 6px 6px 1px rgba(0, 0, 0, 0.1),
-          0 0 5px rgba(0, 0, 0, 0.1), 1px 1px 3px rgba(0, 0, 0, 0.3),
-          3px 3px 5px rgba(0, 0, 0, 0.2), 5px 5px 10px rgba(0, 0, 0, 0.25),
-          10px 10px 10px rgba(0, 0, 0, 0.2), 20px 20px 20px rgba(0, 0, 0, 0.15);
-        transition: all ease-in-out 0.66s;
-      }
-
-      /* when tilted, the right-bottom corner is up */
-      .right-bottom {
-        box-shadow: -1px -1px 0 #ccc, -2px -2px 0 #c9c9c9, -3px -3px 0 #bbb,
-          -4px -4px 0 #b9b9b9, -5px -5px 0 #aaa,
-          -6px -6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
-          -1px -1px 3px rgba(0, 0, 0, 0.3), -3px -3px 5px rgba(0, 0, 0, 0.2),
-          -5px -5px 10px rgba(0, 0, 0, 0.25),
-          -10px -10px 10px rgba(0, 0, 0, 0.2),
-          -20px -20px 20px rgba(0, 0, 0, 0.15);
-        transition: all 1s ease-in-out;
-      }
-
-      /* when tilted, the right-top corner is up */
-      .right-top {
-        box-shadow: -1px 1px 0 #ccc, -2px 2px 0 #c9c9c9, -3px 3px 0 #bbb,
-          -4px 4px 0 #b9b9b9, -5px 5px 0 #aaa, -6px 6px 1px rgba(0, 0, 0, 0.1),
-          0 0 5px rgba(0, 0, 0, 0.1), -1px 1px 3px rgba(0, 0, 0, 0.3),
-          -3px 3px 5px rgba(0, 0, 0, 0.2), -5px 5px 10px rgba(0, 0, 0, 0.25),
-          -10px 10px 10px rgba(0, 0, 0, 0.2),
-          -20px 20px 20px rgba(0, 0, 0, 0.15);
-        transition: all ease-in-out 0.66s;
-      }
-
-      /* when tilted, the left-bottom corner is up */
-      .left-bottom {
-        box-shadow: 1px -1px 0 #ccc, 2px -2px 0 #c9c9c9, 3px -3px 0 #bbb,
-          4px -4px 0 #b9b9b9, 5px -5px 0 #aaa, 6px -6px 1px rgba(0, 0, 0, 0.1),
-          0 0 5px rgba(0, 0, 0, 0.1), 1px -1px 3px rgba(0, 0, 0, 0.3),
-          3px -3px 5px rgba(0, 0, 0, 0.2), 5px -5px 10px rgba(0, 0, 0, 0.25),
-          10px -10px 10px rgba(0, 0, 0, 0.2),
-          20px -20px 20px rgba(0, 0, 0, 0.15);
-        transition: all ease-in-out 0.66s;
       }
     </style>
   </head>
@@ -166,6 +124,10 @@ export const showWalletTemplate = `
         />
       </div>
       <div class="items-container" style="padding-top: 2rem">
+        <div class="info-item">
+          <span class="info-item-title">CONTEXT</span>
+          <code class="info-item-value prettyprint">{{DID_CONTEXT}}</code>
+        </div>
         <div class="info-item">
           <span class="info-item-title">ID</span>
           <code class="info-item-value prettyprint">{{DID_ID}}</code>

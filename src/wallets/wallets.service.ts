@@ -1,13 +1,15 @@
 import { entropyToMnemonic } from '@ethersproject/hdnode';
 import { Injectable } from '@nestjs/common';
 import { ethers, Wallet } from 'ethers';
-import { contract_did, external_storage } from 'src/wallets/abi';
-import {Authentication, Did, PublicKey} from 'src/wallets/responses/did';
+import { Web3StorageService } from 'src/web3-storage/web3-storage.service';
+import { contract_did, external_storage } from '../wallets/abi';
+import { Authentication, Did, PublicKey } from '../wallets/responses/did';
+import { CreateWalletResponse } from './responses/create-wallet';
 @Injectable()
 export class WalletService {
   provider: ethers.providers.BaseProvider;
 
-  constructor() {
+  constructor(private readonly web3StorageService: Web3StorageService) {
     this.provider = ethers.providers.getDefaultProvider(
       'https://rinkeby.infura.io/v3/889a0433853d441c9698403ac1267827',
     );
@@ -66,21 +68,45 @@ export class WalletService {
           };
         },
       ),
-
     };
     console.log(did_documents);
     //console.log(document[0][0]);
     //console.log(document);
   }
 
-  public async create(bytes: Uint8Array, password: string): Promise<string> {
+  public async create(
+    bytes: Uint8Array,
+    password: string,
+  ): Promise<CreateWalletResponse> {
     const hdNode = this.generateHDNode(bytes, password);
     const wallet = this.generateWalletFromHDNode(hdNode);
-    return await this.saveWalletAsJson(wallet, password);
+    // call to contract
+    const mocContract = JSON.stringify({ mock: 'string' }, undefined, 2);
+    const html = this.replaceHtmlData(wallet.address, mocContract);
+    const cid = await this.web3StorageService.upload(
+      Buffer.from(html, 'utf-8'),
+      'text/html',
+    );
+    return {
+      address: wallet.address,
+      privateKey: wallet.privateKey,
+      publicKey: wallet.publicKey,
+      qrUri: `https://dweb.link/ipfs/${cid}`,
+    };
   }
 
   public async get(bytes: Uint8Array): Promise<ethers.Wallet> {
     return await this.restoreHDWallet(bytes);
+  }
+  private replaceHtmlData(address: string, walletInfo: string): string {
+    const vars = [
+      ['{{ADDRESS}}', address],
+      ['{{WALLET_INFO}}', walletInfo],
+    ];
+    for (const [key, value] of vars) {
+      walletInfo = walletInfo.replace(key, value);
+    }
+    return walletInfo;
   }
 
   private async restoreHDWallet(bytes: Uint8Array): Promise<ethers.Wallet> {

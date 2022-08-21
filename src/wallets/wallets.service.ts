@@ -20,12 +20,6 @@ export class WalletService {
     this.provider = ethers.providers.getDefaultProvider(
       'https://polygon-rpc.com/',
     );
-
-    const wallet = Wallet.fromMnemonic(
-      'exhibit fold gasp alley fiber hover cabin confirm spawn mansion foot arena',
-    );
-
-    this.createDID(wallet);
   }
 
   private async createDID(wallet: Wallet): Promise<Did> {
@@ -96,7 +90,7 @@ export class WalletService {
       }),
     };
 
-    console.log(did_documents)
+    console.log(did_documents);
     return did_documents;
   }
 
